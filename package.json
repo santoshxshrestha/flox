@@ -1,0 +1,24 @@
+{
+  "name": "flox",
+  "version": "1.0.0",
+  "description": "Flox: Chat that flows—fast, sleek, and reliable.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santoshxshrestha/flox.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/santoshxshrestha/flox/issues"
+  },
+  "homepage": "https://github.com/santoshxshrestha/flox#readme",
+  "dependencies": {
+    "live-server": "^1.2.2"
+  }
+}
