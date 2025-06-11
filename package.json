@@ -18,7 +18,8 @@
     "url": "https://github.com/santoshxshrestha/flox/issues"
   },
   "homepage": "https://github.com/santoshxshrestha/flox#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "live-server": "^1.2.2"
   }
 }
