@@ -1,72 +1,68 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flox-call</title>
-    <link rel="stylesheet" href="/static/css/home.css" />
-  </head>
 
-  <body>
-    <div class="main">
-      <div class="navbar">
-        <div class="icon">
-          <img
-            src="/static/images/floxlogo_transparent.png"
-            alt="Flox icon"
-            width="60"
-            height="60"
-          />
-          <h2 class="logo">flox</h2>
-        </div>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>flox-call</title>
+  <link rel="stylesheet" href="/static/css/home.css" />
+</head>
 
-      <div class="content">
-        <h1>Video Call Test Page</h1>
-
-        <div class="video-area">
-          <video id="localVideo" autoplay muted playsinline></video>
-          <video id="remoteVideo" autoplay playsinline></video>
-        </div>
-
-        <div class="controls">
-          <button onclick="startCall()">Start Call</button>
-          <button onclick="toggleMute()">Mute/Unmute</button>
-          <button onclick="endCall()">End Call</button>
-        </div>
+<body>
+  <div class="main">
+    <div class="navbar">
+      <div class="icon">
+        <img src="/static/images/floxlogo_transparent.png" alt="Flox icon" width="60" height="60" />
       </div>
     </div>
 
-    <script>
-      let localStream;
+    <div class="content">
+      <h1>Video Call Test Page</h1>
 
-      async function startCall() {
-        try {
-          localStream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
-          document.getElementById("localVideo").srcObject = localStream;
-          console.log("Local stream started");
-        } catch (err) {
-          console.error("Error accessing media devices.", err);
-        }
-      }
+      <div class="video-area">
+        <video id="localVideo" autoplay muted playsinline></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+      </div>
 
-      function toggleMute() {
-        if (!localStream) return;
-        localStream.getAudioTracks().forEach((track) => {
-          track.enabled = !track.enabled;
+      <div class="controls">
+        <button onclick="startCall()">Start Call</button>
+        <button onclick="toggleMute()">Mute/Unmute</button>
+        <button onclick="endCall()">End Call</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let localStream;
+
+    async function startCall() {
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
         });
+        document.getElementById("localVideo").srcObject = localStream;
+        console.log("Local stream started");
+      } catch (err) {
+        console.error("Error accessing media devices.", err);
       }
+    }
 
-      function endCall() {
-        if (!localStream) return;
-        localStream.getTracks().forEach((track) => track.stop());
-        document.getElementById("localVideo").srcObject = null;
-        document.getElementById("remoteVideo").srcObject = null;
-        console.log("Call ended");
-      }
-    </script>
-  </body>
+    function toggleMute() {
+      if (!localStream) return;
+      localStream.getAudioTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+    }
+
+    function endCall() {
+      if (!localStream) return;
+      localStream.getTracks().forEach((track) => track.stop());
+      document.getElementById("localVideo").srcObject = null;
+      document.getElementById("remoteVideo").srcObject = null;
+      console.log("Call ended");
+    }
+  </script>
+</body>
+
 </html>

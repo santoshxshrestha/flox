@@ -30,14 +30,8 @@ body {
 }
 
 .icon img {
-  width: 32px;
-  height: 32px;
-}
-
-.logo {
-  color: #0a141c;
-  font-size: 22px;
-  font-weight: bold;
+  width: 60px;
+  height: 60px;
 }
 
 .content {
