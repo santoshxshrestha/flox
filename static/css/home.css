@@ -23,15 +23,14 @@ body {
 .icon {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background-color: #f5f5f5;
   padding: 0.5rem;
+  border: solid whitesmoke 2px;
   border-radius: 999px;
 }
 
 .icon img {
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
 }
 
 .content {
