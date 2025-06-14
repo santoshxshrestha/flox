@@ -22,3 +22,8 @@ Cargo.lock
 
 node_modules/
 .env
+
+
+# Added by cargo
+
+/target
