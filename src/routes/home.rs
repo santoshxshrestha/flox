@@ -1,4 +1,4 @@
-use actix_web::{HttpResponse, get};
+use actix_web::{HttpResponse, Responder, get};
 use askama::Template;
 
 #[derive(Template)]
