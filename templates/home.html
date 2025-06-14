@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flox-home</title>
+    <title>flox-call</title>
     <link rel="stylesheet" href="/static/css/home.css" />
   </head>
 
@@ -14,16 +14,59 @@
           <img
             src="/static/images/floxlogo_transparent.png"
             alt="Flox icon"
-            width="40"
-            height="40"
+            width="60"
+            height="60"
           />
           <h2 class="logo">flox</h2>
         </div>
       </div>
+
       <div class="content">
-        <h1>Welcome to Flox</h1>
-        <p>This is the basic home page for backend video testing.</p>
+        <h1>Video Call Test Page</h1>
+
+        <div class="video-area">
+          <video id="localVideo" autoplay muted playsinline></video>
+          <video id="remoteVideo" autoplay playsinline></video>
+        </div>
+
+        <div class="controls">
+          <button onclick="startCall()">Start Call</button>
+          <button onclick="toggleMute()">Mute/Unmute</button>
+          <button onclick="endCall()">End Call</button>
+        </div>
       </div>
     </div>
+
+    <script>
+      let localStream;
+
+      async function startCall() {
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          document.getElementById("localVideo").srcObject = localStream;
+          console.log("Local stream started");
+        } catch (err) {
+          console.error("Error accessing media devices.", err);
+        }
+      }
+
+      function toggleMute() {
+        if (!localStream) return;
+        localStream.getAudioTracks().forEach((track) => {
+          track.enabled = !track.enabled;
+        });
+      }
+
+      function endCall() {
+        if (!localStream) return;
+        localStream.getTracks().forEach((track) => track.stop());
+        document.getElementById("localVideo").srcObject = null;
+        document.getElementById("remoteVideo").srcObject = null;
+        console.log("Call ended");
+      }
+    </script>
   </body>
 </html>
