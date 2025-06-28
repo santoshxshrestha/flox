@@ -82,6 +82,32 @@ async fn send_message(
         .finish())
 }
 
+#[derive(Deserialize)]
+struct DeleteForm {
+    id: i32,
+}
+
+#[post("/delete")]
+async fn delete_message(
+    pool: web::Data<sqlx::PgPool>,
+    form: Form<DeleteForm>,
+) -> actix_web::Result<HttpResponse> {
+    sqlx::query!(
+        // The database treats $1, $2 as a string value, not as SQL code.
+        // so the sql injection is prevented here
+        "DELETE FROM messages WHERE id = $1",
+        form.id
+    )
+    .execute(&**pool)
+    .await
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    // Redirect back to home page to show updated messages
+    Ok(HttpResponse::SeeOther()
+        .append_header(("Location", "/"))
+        .finish())
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -97,6 +123,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .service(home)
             .service(send_message)
+            .service(delete_message)
             .service(Files::new("/static", "static"))
     })
     .bind(("127.0.0.1", 8080))?
