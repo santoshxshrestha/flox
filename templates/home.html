@@ -7,6 +7,13 @@
   </head>
 
   <body>
+    <h1>World Chat</h1>
+    <form method="post" action="/send">
+      <input name="username" placeholder="Your name" required />
+      <input name="content" placeholder="Say something..." required />
+      <button type="submit">Send</button>
+    </form>
+
     {% for message in messages %}
     <h1>{{ message.id }}</h1>
     <h1>{{ message.content }}</h1>
