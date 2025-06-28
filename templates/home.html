@@ -10,6 +10,14 @@
 
 <body>
     <h1>this is the home</h1>
+    <h1>Messages</h1>
+    <ul>
+    {% for msg in messages %}
+        <li>
+            <b>{{ msg.username }}</b>: {{ msg.content }} <i>({{ msg.id }})</i>
+        </li>
+    {% endfor %}
+    </ul>
 </body>
 
 </html>
