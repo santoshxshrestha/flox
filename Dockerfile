@@ -12,6 +12,7 @@ WORKDIR /flox
 COPY --from=builder /usr/src/flox/target/release/flox ./flox
 COPY --from=builder /usr/src/flox/static ./static
 COPY --from=builder /usr/src/flox/templates ./templates
+COPY --from=builder /usr/src/flox/sqlx-data.json ./sqlx-data.json
 
 RUN chmod +x ./flox
 
