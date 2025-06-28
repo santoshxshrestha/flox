@@ -1,18 +1,16 @@
-#![allow(unused)]
+use askama::Template;
+use std::env;
+
 use actix_files::Files;
 use actix_web::{App, HttpResponse, HttpServer, get, web};
-use askama::Template;
 use dotenv::dotenv;
-use sqlx::Row;
 use sqlx::postgres::PgPoolOptions;
-use sqlx::types::chrono;
-use std::env;
 
 #[derive(Debug)]
 struct Message {
     id: i32,
     content: String,
-    username: String,
+    usename: String,
 }
 
 #[derive(Template)]
@@ -23,31 +21,28 @@ struct HomeTemplate {
 
 #[get("/")]
 async fn home(pool: web::Data<sqlx::PgPool>) -> actix_web::Result<HttpResponse> {
-    let rows = sqlx::query("SELECT id, content, username FROM messages ORDER BY created_at DESC")
-        .fetch_all(pool.get_ref())
-        .await
-        .map_err(actix_web::error::ErrorInternalServerError)?;
+    let rows = sqlx::query!(
+        r#"
+        select id,content,username 
+        from messages
+        "#
+    )
+    .fetch_all(&**pool) // Note: &**pool to deref web::Data to &PgPool
+    .await
+    .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    let messages = rows
-        .into_iter()
-        .map(|row| Message {
-            id: row.get("id"),
-            content: row.get("content"),
-            username: row.get("username"),
-        })
-        .collect();
-
-    let template = HomeTemplate { messages };
-    let body = template
-        .render()
-        .map_err(actix_web::error::ErrorInternalServerError)?;
-    Ok(HttpResponse::Ok().content_type("text/html").body(body))
+    // let template = HomeTemplate { content };
+    // let body = template
+    //     .render()
+    //     .map_err(|e| actix_web::error::ErrorInternalServerError(e.to_string()))?;
+    //
+    // Ok(HttpResponse::Ok().body(body))
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set.");
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL mut be set.");
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&database_url)
