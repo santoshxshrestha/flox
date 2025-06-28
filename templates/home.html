@@ -10,16 +10,18 @@
   <body>
     <div class="container">
       <h1 class="title">flox - World Chat</h1>
-      <form method="post" action="/send" class="chat-form">
-        <input class="input" name="username" placeholder="Your name" required />
-        <input
-          class="input"
-          name="content"
-          placeholder="Say something..."
-          required
-        />
-        <button class="send-btn" type="submit">Send</button>
-      </form>
+      <div class="message-form">
+        <form method="post" action="/send" class="chat-form">
+          <input class="input" name="username" placeholder="Your name" required />
+          <input
+              class="input"
+              name="content"
+              placeholder="Say something..."
+              required
+              />
+          <button class="send-btn" type="submit">Send</button>
+        </form>
+      </div>
 
       <div class="messages">
         {% for message in messages %}
