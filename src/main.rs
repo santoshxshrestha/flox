@@ -1,9 +1,10 @@
-#![allow(unused)]
 use askama::Template;
+use serde::Deserialize;
 use std::env;
 
 use actix_files::Files;
-use actix_web::{App, HttpResponse, HttpServer, get, web};
+use actix_web::web::Form;
+use actix_web::{App, HttpResponse, HttpServer, get, post, web};
 use dotenv::dotenv;
 use sqlx::postgres::PgPoolOptions;
 
@@ -53,6 +54,34 @@ async fn home(pool: web::Data<sqlx::PgPool>) -> actix_web::Result<HttpResponse> 
     Ok(HttpResponse::Ok().body(body))
 }
 
+#[derive(Deserialize)]
+struct NewMessage {
+    username: String,
+    content: String,
+}
+
+#[post("/send")]
+async fn send_message(
+    pool: web::Data<sqlx::PgPool>,
+    form: Form<NewMessage>,
+) -> actix_web::Result<HttpResponse> {
+    sqlx::query!(
+        // The database treats $1, $2 as a string value, not as SQL code.
+        // so the sql injection is prevented here
+        "INSERT INTO messages (username, content) VALUES ($1, $2)",
+        form.username,
+        form.content,
+    )
+    .execute(&**pool)
+    .await
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    // Redirect back to home page to show updated messages
+    Ok(HttpResponse::SeeOther()
+        .append_header(("Location", "/"))
+        .finish())
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -67,6 +96,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .service(home)
+            .service(send_message)
             .service(Files::new("/static", "static"))
     })
     .bind(("127.0.0.1", 8080))?
