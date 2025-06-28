@@ -1,75 +1,31 @@
 # flox - World Chat
 
-Flox is a fast, sleek, and reliable real-time chat application built with Rust, Actix-Web, SQLx, and PostgreSQL. Designed for learning and fun, it lets users send and delete messages in a simple, modern web UI.
+Flox is a small web-based chat project made while learning Rust, PostgreSQL, and web programming. The goal is not to compete with real-time chat apps, but to make programming and learning databases fun and practical.
 
-## 🚀 Features
+## Project Overview
 
-- 🌍 Real-time world chat—send and delete messages instantly
-- ✨ Minimalist, responsive web interface (see `static/css/home.css`)
-- 🔒 PostgreSQL-backed, using SQLx for async database access
-- 🚦 Built with Actix-Web for high performance
-- 🐳 Ready to run in Docker or with Docker Compose
-
-## 🖥️ Quick Start
-
-### 1. Clone the Repository
-
-```sh
-git clone https://github.com/santoshxshrestha/flox.git
-cd flox
-```
-
-### 2. Run with Docker Compose
-
-This will spin up both the backend and the PostgreSQL database:
-
-```sh
-docker-compose up --build
-```
-
-The chat app will be available at [http://localhost:8080](http://localhost:8080).
-
-### 3. Manual (Local) Development
-
-- Ensure you have Rust (edition 2024) and PostgreSQL installed.
-- Create a `.env` file with your DB connection settings (see `dotenv` usage).
-- Run migrations in the `migrations` directory.
-- Start the server:
-
-```sh
-cargo run
-```
-
-## Tech Stack
-
-- **Rust** (edition 2024)
-- **Actix-Web** for HTTP and WebSocket server
-- **SQLx** for async PostgreSQL access
-- **Askama** for HTML templating
-- **Docker** & **Docker Compose** for easy deployment
+- Simple world chat: anyone can send messages with a name, and delete them.
+- Built with Rust (using Actix-Web), SQLx, and Askama for templating.
+- Stores messages in PostgreSQL.
+- Uses Docker for easy setup.
+- Frontend is plain HTML/CSS with minimal dependencies.
 
 ## File Structure
 
-- `src/` — Rust backend source code
-- `templates/` — Askama HTML templates (see the chat UI in your example)
-- `static/` — Static files (CSS, JS)
-- `migrations/` — SQL migration scripts
-- `docker-compose.yaml` & `Dockerfile` — Deployment configs
+- `src/` - Rust backend code.
+- `templates/` - HTML templates for Askama.
+- `static/` - Static files like CSS.
+- `migrations/` - SQL migration scripts.
+- `Dockerfile` - For container setup.
 
-##  Example Usage
+## Why This Project Exists
 
-Just open the app, enter your name, type a message, and chat with the world!  
-You can also delete your own messages for privacy.
+This project was created for self-learning, to experiment with Rust web development, database integration, and containerization in a practical way. It is intentionally simple.
 
 ## Contributions
 
-PRs and suggestions welcome! This project started as a way to learn Rust, SQLx, and web basics together in a fun, practical way.
-
-## 📄 License
-
-MIT
+Suggestions and improvements are welcome. This is primarily a learning project, so feel free to fork or adapt as you like.
 
 ---
 
-Happy chatting!  
-Made with ❤️ using Rust, Actix-Web, SQLx, and Askama.
+Made for fun and learning.
