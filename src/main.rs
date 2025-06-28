@@ -27,6 +27,7 @@ async fn home(pool: web::Data<sqlx::PgPool>) -> actix_web::Result<HttpResponse> 
         r#"
         select id,content,username 
         from messages
+        order by id desc
         "#
     )
     .fetch_all(&**pool)

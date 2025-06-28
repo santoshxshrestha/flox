@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        select id,content,username \n        from messages\n        ",
+  "query": "\n        select id,content,username \n        from messages\n        order by id desc\n        ",
   "describe": {
     "columns": [
       {
@@ -28,5 +28,5 @@
       false
     ]
   },
-  "hash": "5d749dc8d89e58a7a849cac905a184ed5260d373ea25cf10edddadd1d3c443da"
+  "hash": "d069a174c694706a5fdb1d18da57ae5300927d22cf594727a4b0b2a0760760ae"
 }
