@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>flox - home</title>
+    <link rel="stylesheet" href="../static/css/home.css" />
+</head>
+
+<body>
+    <h1>Leave a Message</h1>
+    <form action="/post" method="post">
+        <textarea name="content" rows="4" cols="50" required></textarea><br />
+        <button type="submit">Post</button>
+    </form>
+
+    <h2>Messages:</h2>
+    <ul>
+        {% for msg in messages %}
+        <li><strong>{{ msg.created_at }}:</strong> {{ msg.content }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
