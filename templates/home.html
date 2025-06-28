@@ -3,21 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>flox - World Chat</title>
+    <link rel="stylesheet" href="../static/css/home.css" />
   </head>
 
   <body>
-    <h1>World Chat</h1>
-    <form method="post" action="/send">
-      <input name="username" placeholder="Your name" required />
-      <input name="content" placeholder="Say something..." required />
-      <button type="submit">Send</button>
-    </form>
+    <div class="container">
+      <h1 class="title">flox - World Chat</h1>
+      <form method="post" action="/send" class="chat-form">
+        <input class="input" name="username" placeholder="Your name" required />
+        <input
+          class="input"
+          name="content"
+          placeholder="Say something..."
+          required
+        />
+        <button class="send-btn" type="submit">Send</button>
+      </form>
 
-    {% for message in messages %}
-    <h1>{{ message.id }}</h1>
-    <h1>{{ message.content }}</h1>
-    <h1>{{ message.username }}</h1>
-    {% endfor %}
+      <div class="messages">
+        {% for message in messages %}
+        <div class="message">
+          <div class="message-header">
+            <span class="message-username">{{ message.username }}</span>
+            <span class="message-id">#{{ message.id }}</span>
+          </div>
+          <div class="message-content">{{ message.content }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
   </body>
 </html>
