@@ -104,3 +104,7 @@ body {
   color: #e5e7eb;
   word-break: break-word;
 }
+.delete-form{
+    display: flex;
+    justify-content: right;
+}
