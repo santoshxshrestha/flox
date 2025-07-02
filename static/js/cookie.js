@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (msgUsername == usernameCookie && msgContent == contentCookie) {
             btn.disabled = false;
+            btn.style.display = " ";
         } else {
+            btn.style.display = "none";
             btn.disabled = true;
         }
     });
