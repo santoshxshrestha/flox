@@ -83,14 +83,13 @@ async fn send_message(
     form: Form<NewMessage>,
     req: HttpRequest,
 ) -> actix_web::Result<HttpResponse> {
-    let mut token = String::new();
     let mut set_new_cookie = false;
-    if let Some(cookie) = req.cookie("token") {
-        token = cookie.to_string();
+    let token = if let Some(cookie) = req.cookie("token") {
+        cookie.to_string()
     } else {
-        token = generate_random_token();
         set_new_cookie = true;
-    }
+        generate_random_token()
+    };
 
     sqlx::query!(
         // The database treats $1, $2 as a string value, not as SQL code.
