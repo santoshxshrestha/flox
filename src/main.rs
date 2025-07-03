@@ -142,9 +142,7 @@ async fn delete_message(
     if let Some(cookie) = req.cookie("token") {
         token = cookie.to_string();
     } else {
-        return Ok(HttpResponse::Forbidden()
-            .content_type("text/html")
-            .body("<html><body>token is empty</body></html>"));
+        return Ok(HttpResponse::Unauthorized().finish());
     }
 
     let result = sqlx::query!(
@@ -168,14 +166,10 @@ async fn delete_message(
                 .append_header(("Location", "/"))
                 .finish())
         } else {
-            Ok(HttpResponse::Forbidden()
-                .content_type("text/html")
-                .body("<html>tokens are not similar</body></html>"))
+            Ok(HttpResponse::Unauthorized().finish())
         }
     } else {
-        Ok(HttpResponse::Forbidden()
-            .content_type("text/html")
-            .body("<html>There is not token in the database</body></html>"))
+        Ok(HttpResponse::Unauthorized().finish())
     }
 }
 
