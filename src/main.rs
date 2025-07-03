@@ -21,6 +21,7 @@ struct Message {
     id: i32,
     content: String,
     username: String,
+    delete_perm: bool,
 }
 
 pub fn generate_random_token() -> String {
@@ -32,10 +33,15 @@ pub fn generate_random_token() -> String {
 }
 
 #[get("/")]
-async fn home(pool: web::Data<sqlx::PgPool>) -> actix_web::Result<HttpResponse> {
+async fn home(pool: web::Data<sqlx::PgPool>, req: HttpRequest) -> actix_web::Result<HttpResponse> {
+    let mut token = String::new();
+    if let Some(cookie) = req.cookie("token") {
+        token = cookie.to_string();
+    }
+
     let rows = sqlx::query!(
         r#"
-        select id,content,username 
+        select id,content,username,token
         from messages
         order by id desc
         "#
@@ -54,6 +60,7 @@ async fn home(pool: web::Data<sqlx::PgPool>) -> actix_web::Result<HttpResponse> 
             id: row.id,
             content: row.content,
             username: row.username,
+            delete_perm: { if (row.token == token) { true } else { false } },
         })
         .collect();
 
