@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   deleteButtons.forEach((btn) => {
     const deletePerm = btn.getAttribute("delete-perm");
 
-    if (deletePerm) {
+    if (deletePerm === "true") {
       btn.disabled = false;
       btn.style.display = "";
     } else {

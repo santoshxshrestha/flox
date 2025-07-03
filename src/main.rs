@@ -138,13 +138,13 @@ async fn delete_message(
     form: Form<DeleteForm>,
     req: HttpRequest,
 ) -> actix_web::Result<HttpResponse> {
-    let token = req
-        .cookie("token")
-        .map(|c| c.value().to_string())
-        .unwrap_or_default();
-
-    if token.is_empty() {
-        return Ok(HttpResponse::Unauthorized().finish());
+    let mut token = String::new();
+    if let Some(cookie) = req.cookie("token") {
+        token = cookie.to_string();
+    } else {
+        return Ok(HttpResponse::Forbidden()
+            .content_type("text/html")
+            .body("<html><body>token is empty</body></html>"));
     }
 
     let result = sqlx::query!(
@@ -168,10 +168,14 @@ async fn delete_message(
                 .append_header(("Location", "/"))
                 .finish())
         } else {
-            Ok(HttpResponse::Forbidden().finish())
+            Ok(HttpResponse::Forbidden()
+                .content_type("text/html")
+                .body("<html>tokens are not similar</body></html>"))
         }
     } else {
-        Ok(HttpResponse::Forbidden().finish())
+        Ok(HttpResponse::Forbidden()
+            .content_type("text/html")
+            .body("<html>There is not token in the database</body></html>"))
     }
 }
 
