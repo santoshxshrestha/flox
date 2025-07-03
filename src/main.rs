@@ -1,4 +1,5 @@
 #![allow(unused)]
+use actix_web::test::ok_service;
 use askama::Template;
 use serde::Deserialize;
 use std::env;
@@ -134,21 +135,43 @@ struct DeleteForm {
 async fn delete_message(
     pool: web::Data<sqlx::PgPool>,
     form: Form<DeleteForm>,
+    req: HttpRequest,
 ) -> actix_web::Result<HttpResponse> {
-    sqlx::query!(
+    let token = req
+        .cookie("token")
+        .map(|c| c.value().to_string())
+        .unwrap_or_default();
+
+    if token.is_empty() {
+        return Ok(HttpResponse::Unauthorized().finish());
+    }
+
+    let result = sqlx::query!(
         // The database treats $1, $2 as a string value, not as SQL code.
         // so the sql injection is prevented here
-        "DELETE FROM messages WHERE id = $1",
+        "select token FROM messages WHERE id = $1",
         form.id
     )
-    .execute(&**pool)
+    .fetch_optional(&**pool)
     .await
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    // Redirect back to home page to show updated messages
-    Ok(HttpResponse::SeeOther()
-        .append_header(("Location", "/"))
-        .finish())
+    if let Some(row) = result {
+        if row.token == token {
+            sqlx::query!("DELETE FROM messages WHERE id = $1", form.id)
+                .execute(&**pool)
+                .await
+                .map_err(actix_web::error::ErrorInternalServerError)?;
+
+            Ok(HttpResponse::SeeOther()
+                .append_header(("Location", "/"))
+                .finish())
+        } else {
+            Ok(HttpResponse::Forbidden().finish())
+        }
+    } else {
+        Ok(HttpResponse::Forbidden().finish())
+    }
 }
 
 #[actix_web::main]
