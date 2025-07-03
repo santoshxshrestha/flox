@@ -5,7 +5,7 @@ use std::env;
 
 use actix_files::Files;
 use actix_web::web::Form;
-use actix_web::{App, HttpResponse, HttpServer, get, post, web};
+use actix_web::{App, HttpRequest, HttpResponse, HttpServer, get, post, web};
 use dotenv::dotenv;
 use rand::{Rng, distr::Alphanumeric};
 use sqlx::postgres::PgPoolOptions;
@@ -75,13 +75,22 @@ struct NewMessage {
 async fn send_message(
     pool: web::Data<sqlx::PgPool>,
     form: Form<NewMessage>,
+    req: HttpRequest,
 ) -> actix_web::Result<HttpResponse> {
+    let mut token = String::new();
+    if let Some(cookie) = req.cookie("token") {
+        token = cookie.to_string();
+    } else {
+        token = generate_random_token();
+    }
+
     sqlx::query!(
         // The database treats $1, $2 as a string value, not as SQL code.
         // so the sql injection is prevented here
-        "INSERT INTO messages (username, content) VALUES ($1, $2)",
+        "INSERT INTO messages (username, content, token) VALUES ($1, $2, $3)",
         form.username,
         form.content,
+        token
     )
     .execute(&**pool)
     .await
