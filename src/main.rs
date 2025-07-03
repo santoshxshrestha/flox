@@ -1,12 +1,10 @@
-#![allow(unused)]
-use actix_web::test::ok_service;
 use askama::Template;
 use serde::Deserialize;
 use std::env;
 
 use actix_files::Files;
 use actix_web::web::Form;
-use actix_web::{App, HttpRequest, HttpResponse, HttpServer, cookie, get, post, web};
+use actix_web::{App, HttpRequest, HttpResponse, HttpServer, get, post, web};
 use dotenv::dotenv;
 use rand::{Rng, distr::Alphanumeric};
 use sqlx::postgres::PgPoolOptions;
@@ -61,7 +59,7 @@ async fn home(pool: web::Data<sqlx::PgPool>, req: HttpRequest) -> actix_web::Res
             id: row.id,
             content: row.content,
             username: row.username,
-            delete_perm: { if (row.token == token) { true } else { false } },
+            delete_perm: { if row.token == token { true } else { false } },
         })
         .collect();
 
@@ -138,12 +136,11 @@ async fn delete_message(
     form: Form<DeleteForm>,
     req: HttpRequest,
 ) -> actix_web::Result<HttpResponse> {
-    let mut token = String::new();
-    if let Some(cookie) = req.cookie("token") {
-        token = cookie.to_string();
+    let token = if let Some(cookie) = req.cookie("token") {
+        cookie.to_string()
     } else {
         return Ok(HttpResponse::Unauthorized().finish());
-    }
+    };
 
     let result = sqlx::query!(
         // The database treats $1, $2 as a string value, not as SQL code.
