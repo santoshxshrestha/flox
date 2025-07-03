@@ -105,12 +105,17 @@ async fn send_message(
             .secure(false)
             .http_only(false)
             .finish();
-    }
 
-    // Redirect back to home page to show updated messages
-    Ok(HttpResponse::SeeOther()
-        .append_header(("Location", "/"))
-        .finish())
+        Ok(HttpResponse::SeeOther()
+            .append_header(("Location", "/"))
+            .cookie(cookie)
+            .finish())
+    } else {
+        // Redirect back to home page to show updated messages
+        Ok(HttpResponse::SeeOther()
+            .append_header(("Location", "/"))
+            .finish())
+    }
 }
 
 #[derive(Deserialize)]
