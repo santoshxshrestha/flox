@@ -5,7 +5,7 @@ use std::env;
 
 use actix_files::Files;
 use actix_web::web::Form;
-use actix_web::{App, HttpRequest, HttpResponse, HttpServer, get, post, web};
+use actix_web::{App, HttpRequest, HttpResponse, HttpServer, cookie, get, post, web};
 use dotenv::dotenv;
 use rand::{Rng, distr::Alphanumeric};
 use sqlx::postgres::PgPoolOptions;
@@ -96,6 +96,16 @@ async fn send_message(
     .execute(&**pool)
     .await
     .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    if set_new_cookie {
+        let cookie = actix_web::cookie::Cookie::build("token", &token)
+            .path("/")
+            .max_age(actix_web::cookie::time::Duration::days(30))
+            .same_site(actix_web::cookie::SameSite::Lax)
+            .secure(false)
+            .http_only(false)
+            .finish();
+    }
 
     // Redirect back to home page to show updated messages
     Ok(HttpResponse::SeeOther()
