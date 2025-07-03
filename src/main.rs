@@ -91,6 +91,7 @@ async fn send_message(
         token = cookie.to_string();
     } else {
         token = generate_random_token();
+        set_new_cookie = true;
     }
 
     sqlx::query!(
@@ -106,7 +107,7 @@ async fn send_message(
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
     if set_new_cookie {
-        let cookie = actix_web::cookie::Cookie::build("token", &token)
+        let cookie = actix_web::cookie::Cookie::build("token", token)
             .path("/")
             .max_age(actix_web::cookie::time::Duration::days(30))
             .same_site(actix_web::cookie::SameSite::Lax)

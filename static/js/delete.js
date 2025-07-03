@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (deletePerm) {
       btn.disabled = false;
-      btn.style.display = " ";
+      btn.style.display = "";
     } else {
       btn.style.display = "none";
       btn.disabled = true;
