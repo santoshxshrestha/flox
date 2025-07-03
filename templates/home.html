@@ -28,7 +28,7 @@
         <div class="message">
           <form method="post" action="/delete" class="delete-form">
             <input type="hidden" name="id" value="{{ message.id }}" />
-            <button type="submit" class="delete-btn" data-username="{{ message.username }}" data-content="{{ message.content }}">Delete</button>
+            <button type="submit" class="delete-btn" delete-perm = "{{ message.delete_perm }}">Delete</button>
           </form>
           <div class="message-header">
             <span class="message-username">{{ message.username }}</span>
@@ -39,7 +39,6 @@
         {% endfor %}
       </div>
     </div>
-    <script src="../static/js/event.js"></script>
-    <script src="../static/js/cookie.js"></script>
+    <script src="../static/js/delete.js"></script>
   </body>
 </html>
