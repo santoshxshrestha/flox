@@ -78,6 +78,7 @@ async fn send_message(
     req: HttpRequest,
 ) -> actix_web::Result<HttpResponse> {
     let mut token = String::new();
+    let mut set_new_cookie = String::new();
     if let Some(cookie) = req.cookie("token") {
         token = cookie.to_string();
     } else {
