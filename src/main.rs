@@ -24,7 +24,7 @@ struct Message {
 }
 
 pub fn generate_random_token() -> String {
-    rand::thread_rng()
+    rand::rng()
         .sample_iter(&Alphanumeric)
         .take(19)
         .map(char::from)
