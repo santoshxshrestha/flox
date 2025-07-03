@@ -111,8 +111,8 @@ async fn send_message(
             .path("/")
             .max_age(actix_web::cookie::time::Duration::days(30))
             .same_site(actix_web::cookie::SameSite::Lax)
-            .secure(false)
-            .http_only(false)
+            .secure(true)
+            .http_only(true)
             .finish();
 
         Ok(HttpResponse::SeeOther()
