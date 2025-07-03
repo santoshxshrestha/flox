@@ -1,5 +1,7 @@
 # flox - World Chat
 
+FLOX is aightweight, passwordless messaging web app that allows users to post short messages and delete their own entries using cookie-based authentication — no account or password required.
+
 Flox is a small web-based chat project made while learning Rust, PostgreSQL, and web programming. The goal is not to compete with real-time chat apps, but to make programming and learning databases fun and practical.
 
 ## Project Overview
@@ -19,6 +21,10 @@ Flox is a small web-based chat project made while learning Rust, PostgreSQL, and
 - `Dockerfile` - For container setup.
 
 ## Why This Project Exists
+
+Why "FLOX"?
+
+    The name FLOX comes from the idea of a flowing, open message board — no accounts, no gates — just a stream of thoughts.
 
 This project was created for self-learning, to experiment with Rust web development, database integration, and containerization in a practical way. It is intentionally simple.
 
