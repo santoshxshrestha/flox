@@ -1,3 +1,4 @@
+#![allow(unused)]
 use askama::Template;
 use serde::Deserialize;
 use std::env;
@@ -6,6 +7,7 @@ use actix_files::Files;
 use actix_web::web::Form;
 use actix_web::{App, HttpResponse, HttpServer, get, post, web};
 use dotenv::dotenv;
+use rand::{Rng, distr::Alphanumeric};
 use sqlx::postgres::PgPoolOptions;
 
 #[derive(Template)]
@@ -19,6 +21,14 @@ struct Message {
     id: i32,
     content: String,
     username: String,
+}
+
+pub fn generate_random_token() -> String {
+    rand::thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(19)
+        .map(char::from)
+        .collect()
 }
 
 #[get("/")]
